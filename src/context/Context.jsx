@@ -6,62 +6,69 @@ export const context = createContext();
 
 const ContextProvider = ({ children }) => {
   const [input, setInput] = useState("");
-  const [recentPrompt, setRecentPrompt] = useState("");
-  const [prevPrompts, setPrevPrompts] = useState([]);
-  const [showResult, setShowResult] = useState(false);
+  const [recentPromt, setRecentPromt] = useState("");
+  const [prevPromt, setPrevPromt] = useState([]);
+  const [showResult, setShowResults] = useState(false);
   const [resultData, setResultData] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const delayPara = (index, nextWord) => {
+  const delayPara = (index, next) => {
     setTimeout(() => {
-      setResultData((prev) => prev + nextWord);
-    }, 75 * 3 * index);
+      setResultData((prev) => prev + next);
+    }, 75 * 3);
   };
-
-  const onSent = async () => {
+  const newChat = () => {
+    setLoading(false);
+    setShowResults(false);
+  };
+  const onSent = async (prompt) => {
     setResultData("");
     setLoading(true);
-    setShowResult(true);
-    setRecentPrompt(input);
-    setPrevPrompts((prev) => [...prev, input]);
-
-    const response = await run(input);
+    setShowResults(true);
+    let response;
+    if (prompt !== undefined) {
+      response = await run(prompt);
+      setRecentPromt(prompt);
+    } else {
+      setPrevPromt((prev) => [...prev, input]);
+      setRecentPromt(input);
+      response = await run(input);
+    }
     let responseArray = response.split("");
     let newResponse = "";
-
     for (let i = 0; i < responseArray.length; i++) {
-      if (i === 0 || i % 2 !== 1) {
+      if (i === 0 || 1 % 2 !== 1) {
         newResponse += responseArray[i];
       } else {
         newResponse += "<b>" + responseArray[i] + "</b>";
       }
     }
-
     let newResponse2 = newResponse.split("*").join("</br>");
     let newResponseArray = newResponse2.split(" ");
-
     for (let i = 0; i < newResponseArray.length; i++) {
-      const nextWord = newResponseArray[i] + " ";
-      delayPara(i, nextWord);
+      const nextWord = newResponseArray[i];
+      delayPara(i, nextWord + "");
     }
-
+    setResultData(newResponse);
     setLoading(false);
     setInput("");
   };
 
+  // Test the function call to ensure it works correctly
+
   const contextValue = {
-    prevPrompts,
-    setPrevPrompts,
+    prevPromt,
+    setPrevPromt,
     onSent,
-    setRecentPrompt,
-    recentPrompt,
+    setRecentPromt,
+    recentPromt,
     showResult,
     loading,
     resultData,
     input,
     setInput,
+    newChat,
   };
-
   return <context.Provider value={contextValue}>{children}</context.Provider>;
 };
 

@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import "./Main.css";
 import { assets } from "../../assets/assets";
 import { context } from "../../context/Context";
+import TextToSpeech from "./test";
 
 function Main() {
   const {
@@ -13,11 +14,15 @@ function Main() {
     setInput,
     input,
   } = useContext(context);
+
   return (
     <div className="main">
       <div className="nav">
         <p>Sharp Gpt</p>
-        <img src={assets.user_icon} alt="" />
+        <div>
+          <img src={assets.user_icon} alt="" />
+          <TextToSpeech text={resultData} />
+        </div>
       </div>
       <div className="main-container">
         {!showResult ? (
@@ -63,7 +68,9 @@ function Main() {
                   <hr />
                 </div>
               ) : (
-                <p dangerouslySetInnerHTML={{ __html: resultData }}></p>
+                <>
+                  <p dangerouslySetInnerHTML={{ __html: resultData }}></p>
+                </>
               )}
             </div>
           </div>
