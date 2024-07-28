@@ -15,12 +15,14 @@ const ContextProvider = ({ children }) => {
   const delayPara = (index, next) => {
     setTimeout(() => {
       setResultData((prev) => prev + next);
-    }, 75 * 3);
+    }, 75 * 3 * index); // Adjusted to multiply by index to ensure sequential update
   };
+
   const newChat = () => {
     setLoading(false);
     setShowResults(false);
   };
+
   const onSent = async (prompt) => {
     setResultData("");
     setLoading(true);
@@ -37,24 +39,22 @@ const ContextProvider = ({ children }) => {
     let responseArray = response.split("");
     let newResponse = "";
     for (let i = 0; i < responseArray.length; i++) {
-      if (i === 0 || 1 % 2 !== 1) {
+      if (i === 0 || i % 2 !== 1) {
+        // Changed condition to "i % 2 !== 1"
         newResponse += responseArray[i];
       } else {
-        newResponse += "<b>" + responseArray[i] + "</b>";
+        newResponse += responseArray[i];
       }
     }
     let newResponse2 = newResponse.split("*").join("</br>");
     let newResponseArray = newResponse2.split(" ");
     for (let i = 0; i < newResponseArray.length; i++) {
       const nextWord = newResponseArray[i];
-      delayPara(i, nextWord + "");
+      delayPara(i, nextWord + " ");
     }
-    setResultData(newResponse);
     setLoading(false);
     setInput("");
   };
-
-  // Test the function call to ensure it works correctly
 
   const contextValue = {
     prevPromt,
