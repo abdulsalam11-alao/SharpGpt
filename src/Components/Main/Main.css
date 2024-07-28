@@ -112,7 +112,7 @@
 .result::-webkit-scrollbar {
   display: none;
 }
-.result-title {
+.recent-title {
   margin: 40px 0px;
   display: flex;
   align-items: center;
@@ -126,6 +126,7 @@
   display: flex;
   align-items: start;
   gap: 20px;
+  
 }
 .loader {
   width: 100%;
@@ -155,4 +156,27 @@
   font-size: 17px;
   font-weight: 300;
   line-height: 1.8;
+}
+.speaker {
+  border: none;
+  font-size: 20px;
+}
+.listen {
+  border: none;
+  font-size: 13px;
+}
+@media (max-width: 600px) {
+  .main-bottom input {
+    width: 150px;
+    flex: none;
+  }
+  .main-bottom img {
+    width: 20px;
+  }
+  .search-box {
+    padding: 5px 10px;
+  }
+  .search-box div {
+    gap: 5px;
+  }
 }

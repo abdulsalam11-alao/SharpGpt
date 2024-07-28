@@ -8,4 +8,14 @@
   display: flex;
   /* background-color: rgb(7, 5, 5); */
   /* color: white; */
+  display: flex;
+  animation: fadeIn 1.5s;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

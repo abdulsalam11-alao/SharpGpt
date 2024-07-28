@@ -1,8 +1,10 @@
-import React, { useContext } from "react";
+// src/Components/Main/Main.jsx
+import { useContext } from "react";
 import "./Main.css";
 import { assets } from "../../assets/assets";
 import { context } from "../../context/Context";
-import TextToSpeech from "./test";
+import TextToSpeech from "./TextToSpeech";
+import SpeechToText from "./SpeechToText"; // Add SpeechToText component if not already added
 
 function Main() {
   const {
@@ -15,38 +17,38 @@ function Main() {
     input,
   } = useContext(context);
 
+  const handleSpeechResult = (transcript) => {
+    setInput(transcript);
+  };
+
   return (
     <div className="main">
       <div className="nav">
         <p>Sharp Gpt</p>
-        <div>
-          <img src={assets.user_icon} alt="" />
-          <TextToSpeech text={resultData} />
-        </div>
+        <img src={assets.user_icon} alt="" />
       </div>
       <div className="main-container">
         {!showResult ? (
           <>
-            {" "}
             <div className="greet">
               <p>
-                <span>Hello, Dev.</span>
+                <span>Hi , User. </span>
               </p>
-              <p>How can i help you today?</p>
+              <p>How can I help you today?</p>
             </div>
             <div className="cards">
               <div className="card">
                 <p>Suggest beautiful places to see on upcoming road trip</p>
                 <img src={assets.compass_icon} alt="" />
-              </div>{" "}
+              </div>
               <div className="card">
                 <p>Briefly Summarize this concept : urban planning</p>
                 <img src={assets.bulb_icon} alt="" />
-              </div>{" "}
+              </div>
               <div className="card">
                 <p>Brainstorm team bonding activities for our work retreat</p>
                 <img src={assets.message_icon} alt="" />
-              </div>{" "}
+              </div>
               <div className="card">
                 <p>Improve the readability of our following code</p>
                 <img src={assets.code_icon} alt="" />
@@ -70,6 +72,8 @@ function Main() {
               ) : (
                 <>
                   <p dangerouslySetInnerHTML={{ __html: resultData }}></p>
+                  <TextToSpeech text={resultData} />{" "}
+                  {/* Add TextToSpeech component */}
                 </>
               )}
             </div>
@@ -85,13 +89,18 @@ function Main() {
             />
             <div>
               <img src={assets.gallery_icon} alt="" />
-              <img src={assets.mic_icon} alt="" />
-              <img src={assets.send_icon} onClick={() => onSent()} alt="" />
+              <SpeechToText onResult={handleSpeechResult} />{" "}
+              {/* Add SpeechToText component */}
+              {input ? (
+                <img src={assets.send_icon} onClick={() => onSent()} alt="" />
+              ) : (
+                ""
+              )}
             </div>
           </div>
           <p className="bottom-info">
             Sharp Gpt may display inaccurate info including about people so
-            double-check its reponse. Your Privacy and Sharp Gpt App
+            double-check its response. Your Privacy and Sharp Gpt App
           </p>
         </div>
       </div>
